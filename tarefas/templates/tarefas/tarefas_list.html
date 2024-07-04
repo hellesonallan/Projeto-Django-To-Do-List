@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Lista de Tarefas</h1>
+    {% if tarefas_list %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Título</th>
+            <th scope="col">Data Inicial</th>
+            <th scope="col">Data Final</th>
+            <th scope="col">Data de Termino</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for tarefa in tarefas_list %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ tarefa.titulo }}</td>
+                  <td>{{ tarefa.data_inicio }}</td>
+                  <td>{{ tarefa.data_final }}</td>
+                  <td>{{ tarefa.data_terminada|default:"-" }}</td>
+                  <td>
+                      <a href="{% url "tarefas_finish" pk=tarefa.pk %}" class="btn btn-success btn-sm {% if tarefa.data_terminada %}disabled{% endif %}">Concluido</a>
+                      <a href="{% url "tarefas_update" pk=tarefa.pk %}" class="btn btn-info btn-sm {% if tarefa.data_terminada %}disabled{% endif %}">Editar</a>
+                      <a href="{% url "tarefas_delete" pk=tarefa.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+                  </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Sem tarefas agendadas</p>
+    {% endif %}
+  <a href="{% url 'tarefas_create' %}" class="btn btn-primary">Nova tarefa</a>
+{% endblock content %}
